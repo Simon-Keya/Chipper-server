@@ -1,0 +1,56 @@
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T14:55:53.165Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T14:55:53.359Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T14:55:53.403Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T14:55:53.547Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T14:55:53.542Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T14:55:53.593Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:01.611Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:01:01.127Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:01.678Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:01:01.264Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:01:01.292Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:01.621Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:17.845Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:01:17.916Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:18.008Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:01:18.049Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:01:18.102Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:01:18.436Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:02:04.699Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:02:05.368Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:02:05.377Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:02:05.417Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:02:05.460Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:02:05.572Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:03:09.195Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:03:09.245Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:03:09.264Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:03:09.290Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:03:09.385Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:03:09.472Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:07:18.794Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:18.786Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:07:18.819Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:18.836Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:07:18.851Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:18.936Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:07:50.156Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:50.152Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:07:50.188Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:50.211Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:07:50.223Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:07:50.313Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:12:14.319Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:12:14.359Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:12:14.408Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:12:14.446Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:12:14.518Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:12:14.523Z"}
+{"errors":[{"location":"body","msg":"Valid productId required","path":"productId","type":"field","value":0},{"location":"body","msg":"Quantity must be a positive integer","path":"quantity","type":"field","value":0}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:12:16.129Z"}
+{"level":"warn","message":"No token provided","timestamp":"2025-09-23T15:13:26.997Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:13:27.030Z"}
+{"level":"warn","message":"Unauthorized access attempt by user 1","timestamp":"2025-09-23T15:13:27.063Z"}
+{"errors":[{"location":"body","msg":"Invalid value","path":"name","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:13:27.140Z"}
+{"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:13:27.159Z"}
+{"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:13:27.209Z"}
+{"errors":[{"location":"body","msg":"Valid productId required","path":"productId","type":"field","value":0},{"location":"body","msg":"Quantity must be a positive integer","path":"quantity","type":"field","value":0}],"level":"warn","message":"Validation failed","timestamp":"2025-09-23T15:13:27.975Z"}
