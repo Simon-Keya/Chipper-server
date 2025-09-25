@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import { Server } from 'socket.io';
+// Removed the 'Server' import as it's no longer used, addressing the TS6133 error.
 import request from 'supertest';
 import { adminMiddleware, authMiddleware } from '../middleware/authMiddleware';
 import { errorMiddleware } from '../middleware/errorMiddleware';
@@ -14,7 +14,13 @@ jest.mock('jsonwebtoken');
 jest.mock('../middleware/authMiddleware');
 
 const prismaMock = new PrismaClient() as jest.Mocked<PrismaClient>;
-const ioMock = new Server();
+
+// Corrected: Use 'as any' to bypass the strict type check,
+// allowing the simple mock object to be used where a Socket is expected.
+const ioMock = {
+    emit: jest.fn(),
+} as any;
+
 const app = express();
 app.use(express.json());
 app.use('/api/products', productRouter(ioMock));
@@ -23,11 +29,11 @@ app.use(errorMiddleware);
 describe('Product Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (authMiddleware as jest.Mock).mockImplementation((req, res, next) => {
+    (authMiddleware as jest.Mock).mockImplementation((req, _res, next) => {
       (req as any).user = { userId: 1, role: 'admin' };
       next();
     });
-    (adminMiddleware as jest.Mock).mockImplementation((req, res, next) => next());
+    (adminMiddleware as jest.Mock).mockImplementation((_req, _res, next) => next());
     (jwt.verify as jest.Mock).mockReturnValue({ userId: 1, role: 'admin' });
     (uploadImage as jest.Mock).mockResolvedValue('http://cloudinary.com/image.jpg');
   });
@@ -112,7 +118,7 @@ describe('Product Controller', () => {
         category: { id: 1, name: 'Category' },
       };
       prismaMock.product.create.mockResolvedValue(product);
-      ioMock.emit = jest.fn();
+      (ioMock.emit as jest.Mock) = jest.fn();
 
       const response = await request(app)
         .post('/api/products')
@@ -180,7 +186,7 @@ describe('Product Controller', () => {
     });
 
     it('should fail if not admin', async () => {
-      (adminMiddleware as jest.Mock).mockImplementation((req, res) => {
+      (adminMiddleware as jest.Mock).mockImplementation((_req, res) => {
         res.status(403).json({ error: 'Admin access required' });
       });
 
@@ -216,7 +222,7 @@ describe('Product Controller', () => {
         category: { id: 1, name: 'Category' },
       };
       prismaMock.product.update.mockResolvedValue(product);
-      ioMock.emit = jest.fn();
+      (ioMock.emit as jest.Mock) = jest.fn();
 
       const response = await request(app)
         .put('/api/products/1')
@@ -263,7 +269,7 @@ describe('Product Controller', () => {
         category: { id: 1, name: 'Category' },
       };
       prismaMock.product.update.mockResolvedValue(product);
-      ioMock.emit = jest.fn();
+      (ioMock.emit as jest.Mock) = jest.fn();
 
       const response = await request(app)
         .put('/api/products/1')
@@ -307,7 +313,7 @@ describe('Product Controller', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
       });
-      ioMock.emit = jest.fn();
+      (ioMock.emit as jest.Mock) = jest.fn();
 
       const response = await request(app)
         .delete('/api/products/1')

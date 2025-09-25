@@ -21,11 +21,11 @@ app.use(errorMiddleware);
 describe('Category Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (authMiddleware as jest.Mock).mockImplementation((req, res, next) => {
+    (authMiddleware as jest.Mock).mockImplementation((req, _res, next) => {
       (req as any).user = { userId: 1, role: 'admin' };
       next();
     });
-    (adminMiddleware as jest.Mock).mockImplementation((req, res, next) => next());
+    (adminMiddleware as jest.Mock).mockImplementation((_req, _res, next) => next());
     (jwt.verify as jest.Mock).mockReturnValue({ userId: 1, role: 'admin' });
   });
 
@@ -86,7 +86,7 @@ describe('Category Controller', () => {
     });
 
     it('should fail if not admin', async () => {
-      (adminMiddleware as jest.Mock).mockImplementation((req, res) => {
+      (adminMiddleware as jest.Mock).mockImplementation((_req, res) => {
         res.status(403).json({ error: 'Admin access required' });
       });
 

@@ -19,7 +19,7 @@ app.use(errorMiddleware);
 describe('Order Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (authMiddleware as jest.Mock).mockImplementation((req, res, next) => {
+    (authMiddleware as jest.Mock).mockImplementation((req, _res, next) => { // 'res' is now '_res'
       (req as any).user = { userId: 1, role: 'user' };
       next();
     });

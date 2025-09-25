@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { check } from 'express-validator';
-import type { Socket } from 'socket.io';
-import { validate } from '../middleware/validateMiddleware.js';
-import { uploadImage } from '../utils/cloudinary.js';
-import logger from '../utils/logger.js';
+import type { Server } from 'socket.io';
+import { validate } from '../middleware/validateMiddleware';
+import { uploadImage } from '../utils/cloudinary';
+import logger from '../utils/logger';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +33,7 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-export const createProduct = async (req: Request, res: Response, socket: Socket) => {
+export const createProduct = async (req: Request, res: Response, socket: Server) => {
   try {
     const { name, price, stock, categoryId, description, image } = req.body;
     const imageUrl = await uploadImage(image);
@@ -59,24 +59,32 @@ export const createProduct = async (req: Request, res: Response, socket: Socket)
   }
 };
 
-export const updateProduct = async (req: Request, res: Response, socket: Socket) => {
+export const updateProduct = async (req: Request, res: Response, socket: Server) => {
   try {
-    const id = parseInt(req.params.id as string); // Add 'as string' to resolve the type error
+    const id = parseInt(req.params.id as string);
     const { name, price, stock, categoryId, description, image } = req.body;
     const imageUrl = image ? await uploadImage(image) : undefined;
+
+    // Conditionally build the data object to only include imageUrl if it exists.
+    const updateData: any = {
+      name,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      categoryId: parseInt(categoryId),
+      description,
+      updatedAt: new Date(),
+    };
+
+    if (imageUrl) {
+      updateData.imageUrl = imageUrl;
+    }
+
     const product = await prisma.product.update({
       where: { id },
-      data: {
-        name,
-        price: parseFloat(price),
-        stock: parseInt(stock),
-        categoryId: parseInt(categoryId),
-        description,
-        imageUrl: imageUrl || undefined,
-        updatedAt: new Date(),
-      },
+      data: updateData,
       include: { category: true },
     });
+
     logger.info('Product updated', { productId: id, name });
     socket.emit('update-product', product);
     res.json(product);
@@ -86,9 +94,9 @@ export const updateProduct = async (req: Request, res: Response, socket: Socket)
   }
 };
 
-export const deleteProduct = async (req: Request, res: Response, socket: Socket) => {
+export const deleteProduct = async (req: Request, res: Response, socket: Server) => {
   try {
-    const id = parseInt(req.params.id as string); // Add 'as string' to resolve the type error
+    const id = parseInt(req.params.id as string);
     await prisma.product.delete({ where: { id } });
     logger.info('Product deleted', { productId: id });
     socket.emit('delete-product', { id });

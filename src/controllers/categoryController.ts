@@ -2,8 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { check } from 'express-validator';
 import { Socket } from 'socket.io';
-import { validate } from '../middleware/validateMiddleware.js';
-import logger from '../utils/logger.js';
+import { validate } from '../middleware/validateMiddleware';
+import logger from '../utils/logger';
 
 const prisma = new PrismaClient();
 

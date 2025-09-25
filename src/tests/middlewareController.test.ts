@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { check } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import request from 'supertest';
@@ -12,9 +12,9 @@ const app = express();
 app.use(express.json());
 app.use(rateLimiter);
 
-app.get('/protected', authMiddleware, (req, res) => res.status(200).json({ message: 'Protected' }));
-app.get('/admin', authMiddleware, adminMiddleware, (req, res) => res.status(200).json({ message: 'Admin' }));
-app.post('/validate', [check('name').notEmpty()], validate, (req, res) => res.status(200).json({ message: 'Valid' }));
+app.get('/protected', authMiddleware, (_req: Request, res: Response) => res.status(200).json({ message: 'Protected' }));
+app.get('/admin', authMiddleware, adminMiddleware, (_req: Request, res: Response) => res.status(200).json({ message: 'Admin' }));
+app.post('/validate', [check('name').notEmpty()], validate, (_req: Request, res: Response) => res.status(200).json({ message: 'Valid' }));
 
 describe('Middleware', () => {
   beforeEach(() => {

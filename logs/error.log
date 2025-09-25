@@ -7,3 +7,28 @@
 {"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:07:50.188Z"}
 {"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:12:14.359Z"}
 {"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:13:27.030Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:26:40.949Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:27:14.129Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-23T15:27:43.733Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-24T09:11:05.207Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-24T09:37:42.688Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:21:48.918Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:21:48.963Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:23:22.069Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:23:22.443Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:26:04.210Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:26:04.237Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:28:13.547Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:28:13.672Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:29:41.941Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:29:42.067Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:30:04.896Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:30:05.064Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T10:30:42.188Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:30:42.339Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:30:42.345Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T10:33:03.123Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-24T13:00:10.011Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T13:00:13.154Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-25T07:20:07.006Z"}
+{"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-25T11:27:18.748Z"}
