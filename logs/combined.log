@@ -139,3 +139,6 @@
 {"errors":[{"location":"body","msg":"Username must be at least 3 characters","path":"username","type":"field","value":"te"},{"location":"body","msg":"Password must be at least 6 characters","path":"password","type":"field","value":"pass"},{"location":"body","msg":"Role must be user or admin","path":"role","type":"field","value":"invalid"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-25T11:27:19.989Z"}
 {"errors":[{"location":"body","msg":"Username is required","path":"username","type":"field","value":""},{"location":"body","msg":"Password is required","path":"password","type":"field","value":""}],"level":"warn","message":"Validation failed","timestamp":"2025-09-25T11:27:20.012Z"}
 {"errors":[{"location":"body","msg":"Name must be at least 3 characters","path":"name","type":"field","value":"ab"}],"level":"warn","message":"Validation failed","timestamp":"2025-09-25T11:27:21.414Z"}
+{"level":"info","message":"Backend running on http://localhost:5000","timestamp":"2025-09-25T13:53:58.106Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-25T13:56:16.216Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-25T13:56:16.375Z"}

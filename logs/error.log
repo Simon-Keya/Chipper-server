@@ -32,3 +32,5 @@
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-24T13:00:13.154Z"}
 {"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-25T07:20:07.006Z"}
 {"error":{},"level":"error","message":"Invalid token","timestamp":"2025-09-25T11:27:18.748Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-25T13:56:16.216Z"}
+{"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-25T13:56:16.375Z"}
