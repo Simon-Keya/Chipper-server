@@ -1,34 +1,52 @@
-import cors from 'cors';
-import express from 'express';
+import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
-import { errorMiddleware } from './middleware/errorMiddleware';
-import { rateLimiter } from './middleware/rateLimitMiddleware';
-import { authRouter } from './routes/authRoutes';
-import { categoryRouter } from './routes/categoryRoutes';
-import { orderRouter } from './routes/orderRoutes';
-import { productRouter } from './routes/productRoutes';
+import app from './app';
+import { initializeDatabase } from './models/db';
 import { initSocket } from './sockets/socketHandler';
 import { config } from './utils/config';
 import logger from './utils/logger';
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+dotenv.config();
 
-app.use(cors());
-app.use(express.json());
-app.use(rateLimiter);
+const startServer = async () => {
+  try {
+    await initializeDatabase();
+    logger.info('✅ Database connected successfully');
 
-initSocket(io);
+    const server = http.createServer(app);
+    const io = new Server(server, { cors: { origin: '*' } });
 
-app.use('/api/products', productRouter(io));
-app.use('/api/categories', categoryRouter(io));
-app.use('/api/orders', orderRouter());
-app.use('/api/auth', authRouter());
+    // Init socket handlers
+    initSocket(io);
 
-app.use(errorMiddleware);
+    // Inject io into routers that need real-time updates
+    app.use('/api/products', require('./routes/productRoutes').productRouter(io));
+    app.use('/api/categories', require('./routes/categoryRoutes').categoryRouter(io));
 
-server.listen(config.port, () => {
-  logger.info(`Backend running on http://localhost:${config.port}`);
-});
+    // Start server
+    server.listen(config.PORT, () => {
+      logger.info(`✅ Backend running on http://localhost:${config.PORT}`);
+      if (process.env.NODE_ENV !== 'production') {
+        logger.info(`📚 Swagger docs: http://localhost:${config.PORT}/api-docs`);
+      }
+    });
+
+    // Graceful shutdown signals
+    process.on('SIGINT', () => logger.warn('🛑 Received SIGINT. Shutting down...'));
+    process.on('SIGTERM', () => logger.warn('🛑 Received SIGTERM. Shutting down...'));
+  } catch (error) {
+    logger.error('❌ Failed to start server:', {
+      message: (error as Error).message,
+      stack: (error as Error).stack,
+      env: {
+        NODE_ENV: process.env.NODE_ENV,
+        PORT: process.env.PORT,
+        DATABASE_URL: process.env.DATABASE_URL ? '[set]' : '[not set]',
+      },
+    });
+    process.exit(1);
+  }
+};
+
+startServer();

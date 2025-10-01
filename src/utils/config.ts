@@ -1,9 +1,20 @@
 import dotenv from 'dotenv';
-
 dotenv.config();
 
+function requireEnv(key: string): string {
+  const value = process.env[key];
+  if (!value) {
+    throw new Error(`❌ Missing required environment variable: ${key}`);
+  }
+  return value;
+}
+
 export const config = {
-  port: process.env.PORT || '5000',
-  jwtSecret: process.env.JWT_SECRET || 'your_jwt_secret_here',
-  apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:5000',
+  PORT: process.env.PORT, // optional fallback
+  DB_USERNAME: requireEnv('DB_USERNAME'),
+  DB_PASSWORD: requireEnv('DB_PASSWORD'),
+  DB_HOST: requireEnv('DB_HOST'),
+  DB_PORT: process.env.DB_PORT || '5432', // optional fallback
+  DB_NAME: requireEnv('DB_NAME'),
+  JWT_SECRET: requireEnv('JWT_SECRET'), // now always a string
 };

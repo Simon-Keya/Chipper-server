@@ -8,10 +8,20 @@ import logger from '../utils/logger';
 
 const prisma = new PrismaClient();
 
+/**
+ * ✅ Validators
+ */
 export const validateRegister = [
-  check('username').isLength({ min: 3 }).trim().withMessage('Username must be at least 3 characters'),
-  check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
-  check('role').isIn(['user', 'admin']).withMessage('Role must be user or admin'),
+  check('username')
+    .isLength({ min: 3 })
+    .trim()
+    .withMessage('Username must be at least 3 characters'),
+  check('password')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters'),
+  check('role')
+    .isIn(['user', 'admin'])
+    .withMessage('Role must be user or admin'),
 ];
 
 export const validateLogin = [
@@ -19,6 +29,11 @@ export const validateLogin = [
   check('password').notEmpty().withMessage('Password is required'),
 ];
 
+/**
+ * ✅ Register Controller
+ * Matches frontend: expects username, password, role
+ * Returns only a message on success
+ */
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -44,7 +59,7 @@ export const register = async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         username,
         password: hashedPassword,
@@ -54,15 +69,18 @@ export const register = async (req: Request, res: Response) => {
       },
     });
 
-    logger.info('User registered', { userId: user.id, username });
-    const token = jwt.sign({ userId: user.id, role: user.role }, config.jwtSecret, { expiresIn: '1h' });
-    res.json({ token });
+    logger.info('User registered successfully', { username });
+    return res.status(201).json({ message: 'Registration successful' });
   } catch (error: unknown) {
     logger.error('Error registering user', { error });
-    res.status(500).json({ error: 'Failed to register user' });
+    return res.status(500).json({ error: 'Failed to register user' });
   }
 };
 
+/**
+ * ✅ Login Controller
+ * Matches frontend: returns { token }
+ */
 export const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -75,21 +93,32 @@ export const login = async (req: Request, res: Response) => {
   try {
     const user = await prisma.user.findUnique({ where: { username } });
     if (!user) {
-      logger.warn('Invalid login attempt', { username });
+      logger.warn('Invalid login attempt - no user', { username });
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      logger.warn('Invalid password', { username });
+      logger.warn('Invalid login attempt - wrong password', { username });
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    logger.info('User logged in', { userId: user.id, username });
-    const token = jwt.sign({ userId: user.id, role: user.role }, config.jwtSecret, { expiresIn: '1h' });
-    res.json({ token });
+    // 🔐 JWT Secret safety check
+    if (!config.JWT_SECRET) {
+      logger.error('JWT_SECRET is not set in environment variables');
+      return res.status(500).json({ error: 'Server misconfiguration' });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      config.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    logger.info('User logged in successfully', { userId: user.id, username });
+    return res.json({ token });
   } catch (error: unknown) {
     logger.error('Error logging in', { error });
-    res.status(500).json({ error: 'Failed to log in' });
+    return res.status(500).json({ error: 'Failed to log in' });
   }
 };
