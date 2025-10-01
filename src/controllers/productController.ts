@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import type { Request, Response } from 'express';
 import { check } from 'express-validator';
 import type { Server } from 'socket.io';
 import { validate } from '../middleware/validateMiddleware';
 import { uploadImage } from '../utils/cloudinary';
 import logger from '../utils/logger';
-
-const prisma = new PrismaClient();
 
 export const validateProduct = [
   check('name').isLength({ min: 3 }).trim().withMessage('Name must be at least 3 characters'),
@@ -20,10 +18,11 @@ export const validateProduct = [
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : undefined;
+    const categoryId = req.query.categoryId ? Number(req.query.categoryId) : undefined;
     const products = await prisma.product.findMany({
       where: categoryId ? { categoryId } : {},
       include: { category: true },
+      orderBy: { createdAt: 'desc' },
     });
     logger.info('Fetched products', { categoryId, count: products.length });
     res.json(products);
@@ -36,20 +35,21 @@ export const getProducts = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response, socket: Server) => {
   try {
     const { name, price, stock, categoryId, description, image } = req.body;
+
     const imageUrl = await uploadImage(image);
+
     const product = await prisma.product.create({
       data: {
         name,
         price: parseFloat(price),
-        stock: parseInt(stock),
-        categoryId: parseInt(categoryId),
+        stock: Number(stock),
+        categoryId: Number(categoryId),
         description,
         imageUrl,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
       include: { category: true },
     });
+
     logger.info('Product created', { productId: product.id, name });
     socket.emit('new-product', product);
     res.status(201).json(product);
@@ -61,22 +61,19 @@ export const createProduct = async (req: Request, res: Response, socket: Server)
 
 export const updateProduct = async (req: Request, res: Response, socket: Server) => {
   try {
-    const id = parseInt(req.params.id as string);
+    const id = Number(req.params.id);
     const { name, price, stock, categoryId, description, image } = req.body;
-    const imageUrl = image ? await uploadImage(image) : undefined;
 
-    // Conditionally build the data object to only include imageUrl if it exists.
     const updateData: any = {
       name,
       price: parseFloat(price),
-      stock: parseInt(stock),
-      categoryId: parseInt(categoryId),
+      stock: Number(stock),
+      categoryId: Number(categoryId),
       description,
-      updatedAt: new Date(),
     };
 
-    if (imageUrl) {
-      updateData.imageUrl = imageUrl;
+    if (image) {
+      updateData.imageUrl = await uploadImage(image);
     }
 
     const product = await prisma.product.update({
@@ -96,7 +93,7 @@ export const updateProduct = async (req: Request, res: Response, socket: Server)
 
 export const deleteProduct = async (req: Request, res: Response, socket: Server) => {
   try {
-    const id = parseInt(req.params.id as string);
+    const id = Number(req.params.id);
     await prisma.product.delete({ where: { id } });
     logger.info('Product deleted', { productId: id });
     socket.emit('delete-product', { id });

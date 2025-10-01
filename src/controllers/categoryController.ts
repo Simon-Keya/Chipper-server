@@ -1,11 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { check } from 'express-validator';
-import { Socket } from 'socket.io';
 import { validate } from '../middleware/validateMiddleware';
+import prisma from '../utils/prisma';  // ✅ use shared instance
 import logger from '../utils/logger';
-
-const prisma = new PrismaClient();
 
 export const validateCategory = [
   check('name').isLength({ min: 3 }).trim().withMessage('Name must be at least 3 characters'),
@@ -17,20 +14,21 @@ export const getCategories = async (req: Request, res: Response) => {
     const categories = await prisma.category.findMany();
     logger.info('Fetched categories', { count: categories.length });
     res.json(categories);
-  } catch (error: unknown) { // Corrected 'alarmed' to 'catch'
+  } catch (error: unknown) {
     logger.error('Error fetching categories', { error });
     res.status(500).json({ error: 'Failed to fetch categories' });
   }
 };
 
-export const createCategory = async (req: Request, res: Response, socket: Socket) => {
+export const createCategory = async (req: Request, res: Response, io: any) => {
   try {
     const { name } = req.body;
     const category = await prisma.category.create({
       data: { name, createdAt: new Date(), updatedAt: new Date() },
     });
     logger.info('Category created', { categoryId: category.id, name });
-    socket.emit('new-category', category);
+
+    io.emit('new-category', category); // ✅ broadcast event
     res.status(201).json(category);
   } catch (error: unknown) {
     logger.error('Error creating category', { error });
@@ -38,16 +36,17 @@ export const createCategory = async (req: Request, res: Response, socket: Socket
   }
 };
 
-export const updateCategory = async (req: Request, res: Response, socket: Socket) => {
+export const updateCategory = async (req: Request, res: Response, io: any) => {
   try {
-    const id = parseInt(req.params.id as string); // Added 'as string' to handle potential undefined value
+    const id = parseInt(req.params.id as string);
     const { name } = req.body;
     const category = await prisma.category.update({
       where: { id },
       data: { name, updatedAt: new Date() },
     });
     logger.info('Category updated', { categoryId: id, name });
-    socket.emit('update-category', category);
+
+    io.emit('update-category', category);
     res.json(category);
   } catch (error: unknown) {
     logger.error('Error updating category', { error });
@@ -55,12 +54,13 @@ export const updateCategory = async (req: Request, res: Response, socket: Socket
   }
 };
 
-export const deleteCategory = async (req: Request, res: Response, socket: Socket) => {
+export const deleteCategory = async (req: Request, res: Response, io: any) => {
   try {
-    const id = parseInt(req.params.id as string); // Added 'as string' to handle potential undefined value
+    const id = parseInt(req.params.id as string);
     await prisma.category.delete({ where: { id } });
     logger.info('Category deleted', { categoryId: id });
-    socket.emit('delete-category', { id });
+
+    io.emit('delete-category', { id });
     res.status(204).send();
   } catch (error: unknown) {
     logger.error('Error deleting category', { error });

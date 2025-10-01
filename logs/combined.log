@@ -265,3 +265,50 @@
 {"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T08:54:37.757Z"}
 {"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T08:54:37.843Z"}
 {"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T08:54:37.844Z"}
+{"level":"info","message":"User registered successfully","timestamp":"2025-10-01T09:08:28.964Z","username":"SimonKeya"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-10-01T09:08:45.780Z","userId":1,"username":"SimonKeya"}
+{"level":"info","message":"Client connected","socketId":"BSpuaENsMQS_zKBDAAAB","timestamp":"2025-10-01T09:10:51.646Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T09:10:51.754Z"}
+{"level":"info","message":"Client disconnected","socketId":"BSpuaENsMQS_zKBDAAAB","timestamp":"2025-10-01T09:11:07.328Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T09:14:51.662Z"}
+{"level":"info","message":"Client connected","socketId":"S9435E3JmKF9Ev9VAAAD","timestamp":"2025-10-01T09:14:51.865Z"}
+{"level":"info","message":"Client disconnected","socketId":"S9435E3JmKF9Ev9VAAAD","timestamp":"2025-10-01T09:47:46.105Z"}
+{"error":{"expiredAt":"2025-10-01T10:08:45.000Z","message":"jwt expired","name":"TokenExpiredError"},"level":"error","message":"Invalid token","timestamp":"2025-10-01T11:29:42.330Z"}
+{"level":"info","message":"Client connected","socketId":"By1hhu6jIqFnSEFbAAAF","timestamp":"2025-10-01T11:29:42.382Z"}
+{"level":"info","message":"Client disconnected","socketId":"By1hhu6jIqFnSEFbAAAF","timestamp":"2025-10-01T11:30:06.453Z"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-10-01T11:30:31.027Z","userId":1,"username":"SimonKeya"}
+{"level":"info","message":"Client connected","socketId":"26mTNIv7fcJUSAOpAAAI","timestamp":"2025-10-01T11:30:31.667Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T11:30:31.832Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T11:30:31.854Z"}
+{"level":"info","message":"Client disconnected","socketId":"26mTNIv7fcJUSAOpAAAI","timestamp":"2025-10-01T11:31:07.451Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T11:47:16.266Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T11:47:16.295Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T11:47:16.296Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T11:58:41.008Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T11:58:41.031Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T11:58:41.062Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T11:59:16.417Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T11:59:16.443Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T11:59:16.446Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T11:59:43.627Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T11:59:43.661Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T11:59:43.666Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T12:05:50.293Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T12:05:52.607Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T12:05:52.608Z"}
+{"categoryId":1,"level":"info","message":"Category created","name":"Clothing","timestamp":"2025-10-01T12:06:45.577Z"}
+{"categoryId":2,"level":"info","message":"Category created","name":"Fashion","timestamp":"2025-10-01T12:07:12.449Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:07:28.544Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:07:28.589Z"}
+{"level":"info","message":"Client connected","socketId":"sfuD7Gy2FFciQqraAAAC","timestamp":"2025-10-01T12:08:42.714Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T12:08:42.770Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T12:08:42.946Z"}
+{"level":"info","message":"Client disconnected","socketId":"sfuD7Gy2FFciQqraAAAC","timestamp":"2025-10-01T12:08:45.721Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:08:45.826Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:08:45.840Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:08:45.844Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:08:45.863Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:15:33.783Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:15:33.796Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:15:33.914Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:15:34.048Z"}

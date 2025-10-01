@@ -1,12 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { config } from '../utils/config';
 import logger from '../utils/logger';
-
-const prisma = new PrismaClient();
 
 /**
  * ✅ Validators
@@ -31,8 +29,6 @@ export const validateLogin = [
 
 /**
  * ✅ Register Controller
- * Matches frontend: expects username, password, role
- * Returns only a message on success
  */
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -64,8 +60,6 @@ export const register = async (req: Request, res: Response) => {
         username,
         password: hashedPassword,
         role,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
 
@@ -79,7 +73,6 @@ export const register = async (req: Request, res: Response) => {
 
 /**
  * ✅ Login Controller
- * Matches frontend: returns { token }
  */
 export const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -103,9 +96,8 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // 🔐 JWT Secret safety check
     if (!config.JWT_SECRET) {
-      logger.error('JWT_SECRET is not set in environment variables');
+      logger.error('JWT_SECRET missing');
       return res.status(500).json({ error: 'Server misconfiguration' });
     }
 

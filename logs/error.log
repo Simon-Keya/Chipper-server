@@ -138,3 +138,4 @@
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching products","timestamp":"2025-09-29T14:03:21.300Z"}
 {"error":{"clientVersion":"6.16.2","name":"PrismaClientInitializationError"},"level":"error","message":"Error fetching categories","timestamp":"2025-09-29T14:03:24.185Z"}
 {"error":{"clientVersion":"6.16.2","code":"P2021","meta":{"modelName":"User","table":"public.User"},"name":"PrismaClientKnownRequestError"},"level":"error","message":"Error registering user","timestamp":"2025-10-01T07:54:25.146Z"}
+{"error":{"expiredAt":"2025-10-01T10:08:45.000Z","message":"jwt expired","name":"TokenExpiredError"},"level":"error","message":"Invalid token","timestamp":"2025-10-01T11:29:42.330Z"}

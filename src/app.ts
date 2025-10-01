@@ -5,10 +5,8 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { errorMiddleware } from './middleware/errorMiddleware';
 import { rateLimiter } from './middleware/rateLimitMiddleware';
-import { authRouter } from './routes/authRoutes';
-import { categoryRouter } from './routes/categoryRoutes';
 import { orderRouter } from './routes/orderRoutes';
-import { productRouter } from './routes/productRoutes';
+import { authRouter } from './routes/authRoutes';
 
 const app: Application = express();
 
@@ -17,9 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(rateLimiter);
 
-// Routes
-app.use('/api/products', productRouter); // socket injected later
-app.use('/api/categories', categoryRouter);
+// Routes that don’t need socket
 app.use('/api/orders', orderRouter());
 app.use('/api/auth', authRouter());
 
