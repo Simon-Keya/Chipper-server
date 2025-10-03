@@ -312,3 +312,101 @@
 {"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:15:33.796Z"}
 {"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:15:33.914Z"}
 {"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:15:34.048Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-01T12:24:04.461Z"}
+{"level":"info","message":"Client connected","socketId":"MeGv3UOeFEChLwqHAAAE","timestamp":"2025-10-01T12:24:04.631Z"}
+{"level":"info","message":"Client disconnected","socketId":"MeGv3UOeFEChLwqHAAAE","timestamp":"2025-10-01T12:24:09.045Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:24:09.628Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-01T12:24:09.721Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:24:09.810Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T12:24:09.816Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T12:51:11.761Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T13:32:15.097Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5000","timestamp":"2025-10-01T13:32:20.148Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5000/api-docs","timestamp":"2025-10-01T13:32:20.148Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T13:32:52.013Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-01T13:32:52.026Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T17:08:08.650Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T17:11:57.441Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T17:19:01.508Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-01T17:21:05.122Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5001","timestamp":"2025-10-01T17:21:08.582Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5001/api-docs","timestamp":"2025-10-01T17:21:08.583Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-02T09:23:49.344Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5001","timestamp":"2025-10-02T09:24:13.630Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5001/api-docs","timestamp":"2025-10-02T09:24:13.631Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-02T09:41:48.362Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T09:41:48.719Z"}
+{"level":"warn","message":"Invalid login attempt - no user","timestamp":"2025-10-02T09:46:37.071Z","username":"Simonkeya"}
+{"level":"warn","message":"Invalid login attempt - no user","timestamp":"2025-10-02T09:47:01.596Z","username":"Simonkeya"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-10-02T09:47:12.034Z","userId":1,"username":"SimonKeya"}
+{"level":"info","message":"Client connected","socketId":"9xFHa3PwgIHm2r4LAAAC","timestamp":"2025-10-02T09:47:17.242Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-02T09:47:17.433Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-02T09:47:17.437Z"}
+{"level":"info","message":"Client disconnected","socketId":"9xFHa3PwgIHm2r4LAAAC","timestamp":"2025-10-02T09:52:16.241Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-02T09:52:16.371Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-02T09:52:16.387Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T09:52:16.846Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T09:52:16.868Z"}
+{"error":{},"level":"error","message":"Error creating product","timestamp":"2025-10-02T09:53:43.556Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-02T10:18:53.801Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5001","timestamp":"2025-10-02T10:19:00.673Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5001/api-docs","timestamp":"2025-10-02T10:19:00.674Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-02T11:04:49.672Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-02T11:05:04.225Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5001","timestamp":"2025-10-02T11:05:08.632Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5001/api-docs","timestamp":"2025-10-02T11:05:08.633Z"}
+{"error":{"expiredAt":"2025-10-02T10:47:12.000Z","message":"jwt expired","name":"TokenExpiredError"},"level":"error","message":"Invalid token","timestamp":"2025-10-02T11:14:20.797Z"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-10-02T11:15:35.316Z","userId":1,"username":"SimonKeya"}
+{"level":"info","message":"Client connected","socketId":"Cb0DPZqFlzzKuJh8AAAC","timestamp":"2025-10-02T11:15:35.909Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-02T11:15:36.154Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-02T11:15:36.159Z"}
+{"level":"info","message":"Client disconnected","socketId":"Cb0DPZqFlzzKuJh8AAAC","timestamp":"2025-10-02T11:15:41.211Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T11:15:41.444Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:15:41.450Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T11:15:41.466Z"}
+{"count":0,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:15:41.468Z"}
+{"level":"info","message":"Product created","productId":1,"timestamp":"2025-10-02T11:17:27.920Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:17:35.555Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T11:17:35.558Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:17:35.643Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T11:17:35.727Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:18:32.916Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:18:32.928Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:20:15.522Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:20:26.170Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T11:45:44.147Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:08:32.698Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T12:08:32.712Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-02T12:08:32.777Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:08:32.780Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:08:52.510Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:12:38.424Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:13:11.473Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:13:11.476Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:24:48.226Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:25:41.894Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-02T12:38:13.283Z"}
+{"level":"info","message":"✅ Database connected successfully","timestamp":"2025-10-03T10:46:21.627Z"}
+{"level":"info","message":"✅ Backend running on http://localhost:5001","timestamp":"2025-10-03T10:46:28.176Z"}
+{"level":"info","message":"📚 Swagger docs: http://localhost:5001/api-docs","timestamp":"2025-10-03T10:46:28.178Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T11:30:56.389Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:01:36.838Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-03T12:01:36.906Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:01:36.950Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:10:23.457Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:10:23.465Z"}
+{"level":"info","message":"User logged in successfully","timestamp":"2025-10-03T12:15:14.646Z","userId":1,"username":"SimonKeya"}
+{"level":"info","message":"Client connected","socketId":"jS218tBuOGAxvNc_AAAC","timestamp":"2025-10-03T12:15:15.341Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-03T12:15:15.671Z"}
+{"count":0,"level":"info","message":"Fetched orders","timestamp":"2025-10-03T12:15:15.675Z"}
+{"level":"info","message":"Client disconnected","socketId":"jS218tBuOGAxvNc_AAAC","timestamp":"2025-10-03T12:15:23.729Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-03T12:15:24.196Z"}
+{"count":2,"level":"info","message":"Fetched categories","timestamp":"2025-10-03T12:15:24.228Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:15:24.487Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:15:24.581Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:50:20.967Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:53:18.559Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T12:53:18.831Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T13:07:04.685Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T13:12:33.935Z"}
+{"count":1,"level":"info","message":"Fetched products","timestamp":"2025-10-03T13:12:33.939Z"}

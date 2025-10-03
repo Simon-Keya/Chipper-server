@@ -16,5 +16,10 @@ export const config = {
   DB_HOST: requireEnv('DB_HOST'),
   DB_PORT: process.env.DB_PORT || '5432', // optional fallback
   DB_NAME: requireEnv('DB_NAME'),
-  JWT_SECRET: requireEnv('JWT_SECRET'), // now always a string
+  JWT_SECRET: requireEnv('JWT_SECRET'),
+
+  // Cloudinary config
+  CLOUDINARY_CLOUD_NAME: requireEnv('CLOUDINARY_CLOUD_NAME'),
+  CLOUDINARY_API_KEY: requireEnv('CLOUDINARY_API_KEY'),
+  CLOUDINARY_API_SECRET: requireEnv('CLOUDINARY_API_SECRET'),
 };

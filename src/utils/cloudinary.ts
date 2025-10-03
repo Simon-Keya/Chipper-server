@@ -1,26 +1,21 @@
-import { v2 as cloudinary } from 'cloudinary';
-import dotenv from 'dotenv';
+// src/utils/cloudinary.ts
+import { v2 as cloudinary } from "cloudinary";
+import { config } from "./config";
 
-dotenv.config();
-
-// Fix the errors by asserting that the environment variables are not undefined.
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
-  api_key: process.env.CLOUDINARY_API_KEY!,
-  api_secret: process.env.CLOUDINARY_API_SECRET!,
+  cloud_name: config.CLOUDINARY_CLOUD_NAME,
+  api_key: config.CLOUDINARY_API_KEY,
+  api_secret: config.CLOUDINARY_API_SECRET,
 });
 
 export const uploadImage = async (image: string): Promise<string> => {
   try {
     const result = await cloudinary.uploader.upload(image, {
-      folder: 'chipper',
-      transformation: [{ width: 600, height: 400, crop: 'fill', quality: 80 }],
+      folder: "chipper", // optional folder in your cloudinary account
+      resource_type: "auto",
     });
     return result.secure_url;
-  } catch (error: unknown) {
-    console.error('Error uploading to Cloudinary:', error instanceof Error ? error.message : String(error));
-    throw new Error('Failed to upload image');
+  } catch (err) {
+    throw new Error("Cloudinary upload failed: " + (err as Error).message);
   }
 };
-
-export default cloudinary;
