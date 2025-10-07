@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express';
 import {
   createProduct,
   deleteProduct,
+  getProductById,
   getProducts,
   updateProduct,
   validateCreateProduct,
@@ -12,13 +13,16 @@ import { adminMiddleware, authMiddleware } from '../middleware/authMiddleware';
 export const productRouter = (io: any) => {
   const router = Router();
 
+  // ✅ Public routes
   router.get('/', getProducts);
+  router.get('/:id', getProductById); // <-- Added this for single product details
 
+  // ✅ Protected admin routes
   router.post(
     '/',
     authMiddleware,
     adminMiddleware,
-    validateCreateProduct, // ✅ stricter rules
+    validateCreateProduct,
     (req: Request, res: Response) => createProduct(req, res, io)
   );
 
@@ -26,7 +30,7 @@ export const productRouter = (io: any) => {
     '/:id',
     authMiddleware,
     adminMiddleware,
-    validateUpdateProduct, // ✅ looser rules
+    validateUpdateProduct,
     (req: Request, res: Response) => updateProduct(req, res, io)
   );
 
