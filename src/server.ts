@@ -1,3 +1,4 @@
+// src/server.ts
 import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -7,24 +8,30 @@ import { initSocket } from './sockets/socketHandler';
 import { config } from './utils/config';
 import logger from './utils/logger';
 
+// Import route initializers properly
+import { categoryRouter } from './routes/categoryRoutes';
+import initializeProductRoutes from './routes/productRoutes';
+
 dotenv.config();
 
 const startServer = async () => {
   try {
+    // Initialize database
     await initializeDatabase();
     logger.info('✅ Database connected successfully');
 
+    // Create HTTP + Socket.IO server
     const server = http.createServer(app);
     const io = new Server(server, { cors: { origin: '*' } });
 
-    // Init socket handlers
+    // Initialize socket event handlers
     initSocket(io);
 
-    // Inject io into routers that need real-time updates
-    app.use('/api/products', require('./routes/productRoutes').productRouter(io));
-    app.use('/api/categories', require('./routes/categoryRoutes').categoryRouter(io));
+    // ✅ Attach routers with io dependency
+    app.use('/api/products', initializeProductRoutes(io)); // uses default export
+    app.use('/api/categories', categoryRouter(io)); // uses named export
 
-    // Start server
+    // ✅ Start server
     server.listen(config.PORT, () => {
       logger.info(`✅ Backend running on http://localhost:${config.PORT}`);
       if (process.env.NODE_ENV !== 'production') {
@@ -32,7 +39,7 @@ const startServer = async () => {
       }
     });
 
-    // Graceful shutdown signals
+    // ✅ Graceful shutdown signals
     process.on('SIGINT', () => logger.warn('🛑 Received SIGINT. Shutting down...'));
     process.on('SIGTERM', () => logger.warn('🛑 Received SIGTERM. Shutting down...'));
   } catch (error) {
