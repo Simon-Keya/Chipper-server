@@ -7,9 +7,13 @@ RUN npm install
 
 COPY . .
 
-# Generate prisma client during build only
+# Generate prisma client during build
 RUN npx prisma generate
 
-# The migration will run only after environment variables exist
-CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
-EXPOSE 4000
+# Build TypeScript to dist/
+RUN npm run build
+
+# Run migrations only after env vars exist
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]
+
+EXPOSE 1000
