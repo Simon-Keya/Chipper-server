@@ -7,7 +7,7 @@ RUN npm install
 
 COPY . .
 
-# Generate prisma client during build
+
 RUN npx prisma generate
 
 # Build TypeScript to dist/
