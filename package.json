@@ -1,5 +1,3 @@
-//package.json
-
 {
   "name": "chipper-server",
   "version": "1.0.0",
@@ -8,11 +6,11 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
-    "build": "tsc && prisma generate",   
-    "postinstall": "npm run build",      
+    "build": "tsc && prisma generate",
+    "postinstall": "npm run build",
     "lint": "eslint src --ext .ts",
     "prisma:init": "prisma init",
-    "prisma:migrate": "prisma migrate deploy", 
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:generate": "prisma generate",
     "test": "jest"
   },
