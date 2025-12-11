@@ -33,9 +33,9 @@ const startServer = async () => {
 
     // ✅ Start server
     server.listen(config.PORT, () => {
-      logger.info(`✅ Backend running on http://localhost:${config.PORT}`);
+      logger.info(`✅ Backend running on :${config.PORT}`);
       if (process.env.NODE_ENV !== 'production') {
-        logger.info(`📚 Swagger docs: http://localhost:${config.PORT}/api-docs`);
+        logger.info(`📚 Swagger docs:${config.PORT}/api-docs`);
       }
     });
 
