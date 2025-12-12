@@ -52,9 +52,9 @@ const startServer = async () => {
 
     // Start server
     server.listen(config.PORT, () => {
-      logger.info(`Server running on http://localhost:${config.PORT}`);
+      logger.info(`Server running on:${config.PORT}`);
       if (process.env.NODE_ENV !== 'production') {
-        logger.info(`Swagger UI: http://localhost:${config.PORT}/api-docs`);
+        logger.info(`Swagger UI:${config.PORT}/api-docs`);
       }
     });
 
