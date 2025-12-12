@@ -5,23 +5,16 @@ import jwt from 'jsonwebtoken';
 import { config } from '../utils/config';
 import logger from '../utils/logger';
 
-// Global augmentation — this is the correct way to extend Express Request
 declare global {
   namespace Express {
     interface Request {
       user?: {
-        userId: number;
+        userId: number;   // ← Must be userId, not id
         role: string;
       };
     }
   }
 }
-
-interface JwtPayload {
-  userId: number;
-  role: string;
-}
-
 /**
  * Authenticate JWT token
  */

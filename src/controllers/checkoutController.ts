@@ -1,35 +1,29 @@
-import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { authenticateToken } from '../middleware/authMiddleware';
+// src/controllers/checkoutController.ts
+
+import { Request, Response } from 'express';
+import prisma from '../utils/prisma';
 import { processPayment } from '../utils/payment';
 
-const prisma = new PrismaClient();
-
-export const createCheckout = async (req: Request, res: Response): Promise<void> => {
+export const createCheckout = async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
-      res.status(401).json({ error: 'Unauthorized' });
-      return;
-    }
+    const userId = req.user?.userId;
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
     const { shippingAddress, paymentMethod } = req.body;
 
-    // Get user's cart items
     const cartItems = await prisma.cartItem.findMany({
       where: { userId },
-      include: {
-        product: true,
-      },
+      include: { product: true },
     });
 
     if (cartItems.length === 0) {
-      res.status(400).json({ error: 'Cart is empty' });
-      return;
+      return res.status(400).json({ error: 'Your cart is empty' });
     }
 
-    // Calculate total
-    const total = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const total = cartItems.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
 
     // Create order
     const order = await prisma.order.create({
@@ -39,82 +33,87 @@ export const createCheckout = async (req: Request, res: Response): Promise<void>
         status: 'PENDING',
         paymentMethod,
         paymentStatus: 'PENDING',
-        shippingAddress,
-      },
-      include: {
-        user: true,
+        shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
       },
     });
 
     // Create order items
-    const orderItems = await prisma.orderItem.createMany({
-      data: cartItems.map(item => ({
+    await prisma.orderItem.createMany({
+      data: cartItems.map((item) => ({
         orderId: order.id,
         productId: item.productId,
         quantity: item.quantity,
+        priceAtPurchase: item.product.price,
       })),
     });
 
     // Clear cart
-    await prisma.cartItem.deleteMany({
-      where: { userId },
-    });
+    await prisma.cartItem.deleteMany({ where: { userId } });
 
-    // Process payment (stub - integrate with Stripe/M-Pesa)
-    let paymentStatus = 'PENDING';
+    // Process payment
+    let paymentResult: 'COMPLETED' | 'PENDING' | 'FAILED' = 'PENDING';
+
     if (paymentMethod === 'CARD') {
-      paymentStatus = await processPayment(total, 'card', order.id);
+      paymentResult = await processPayment(total, 'card', order.id);
     } else if (paymentMethod === 'MPESA') {
-      paymentStatus = await processPayment(total, 'mpesa', order.id);
+      paymentResult = await processPayment(total, 'mpesa', order.id);
     }
 
-    // Update order payment status
+    // Update order status
     await prisma.order.update({
       where: { id: order.id },
-      data: { paymentStatus },
+      data: {
+        paymentStatus: paymentResult,
+        status: paymentResult === 'COMPLETED' ? 'PROCESSING' : 'PENDING',
+      },
     });
 
-    if (paymentStatus === 'COMPLETED') {
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { status: 'PROCESSING' },
-      });
-    }
-
-    res.json({
-      order,
-      orderItems,
-      paymentStatus,
-    });
-  } catch (error) {
-    console.error('Checkout error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
-
-export const getCheckout = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { orderId } = req.params;
-    const order = await prisma.order.findUnique({
-      where: { id: parseInt(orderId) },
+    const finalOrder = await prisma.order.findUnique({
+      where: { id: order.id },
       include: {
-        user: true,
-        items: {
-          include: {
-            product: true,
-          },
+        orderItems: {
+          include: { product: true },
+        },
+        user: {
+          select: { id: true, username: true, email: true },
         },
       },
     });
 
-    if (!order) {
-      res.status(404).json({ error: 'Order not found' });
-      return;
-    }
+    res.json({
+      success: true,
+      order: finalOrder,
+      paymentStatus: paymentResult,
+    });
+  } catch (error) {
+    console.error('Checkout failed:', error);
+    res.status(500).json({ error: 'Checkout failed. Please try again.' });
+  }
+};
+
+export const getCheckout = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const userId = req.user?.userId;
+
+    const order = await prisma.order.findFirst({
+      where: {
+        id: Number(orderId),
+        ...(userId ? { userId } : {}),
+      },
+      include: {
+        orderItems: {
+          include: { product: { include: { category: true } } },
+        },
+        user: { select: { username: true, email: true } },
+      },
+    });
+
+    if (!order) return res.status(404).json({ error: 'Order not found' });
 
     res.json(order);
   } catch (error) {
-    console.error('Get checkout error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Get order error:', error);
+    res.status(500).json({ error: 'Failed to fetch order' });
   }
 };
