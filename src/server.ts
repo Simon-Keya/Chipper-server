@@ -1,4 +1,3 @@
-// src/server.ts
 import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -8,49 +7,76 @@ import { initSocket } from './sockets/socketHandler';
 import { config } from './utils/config';
 import logger from './utils/logger';
 
-// Import route initializers properly
-import { categoryRouter } from './routes/categoryRoutes';
+// Route initializers (some need `io` for real-time features)
 import initializeProductRoutes from './routes/productRoutes';
+import { categoryRouter } from './routes/categoryRoutes';
+import { orderRouter } from './routes/orderRoutes';
+import { authRouter } from './routes/authRoutes';
+import { cartRouter } from './routes/cartRoutes';
+import { reviewRouter } from './routes/reviewRoutes';
 
 dotenv.config();
 
 const startServer = async () => {
   try {
-    // Initialize database
+    // Initialize database connection
     await initializeDatabase();
-    logger.info('✅ Database connected successfully');
+    logger.info('Database connected successfully');
 
-    // Create HTTP + Socket.IO server
+    // Create HTTP server
     const server = http.createServer(app);
-    const io = new Server(server, { cors: { origin: '*' } });
 
-    // Initialize socket event handlers
+    // Initialize Socket.IO with CORS
+    const io = new Server(server, {
+      cors: {
+        origin: process.env.NODE_ENV === 'production' 
+          ? ['https://yourdomain.com'] 
+          : ['http://localhost:3000', 'http://localhost:3001'],
+        methods: ['GET', 'POST'],
+      },
+    });
+
+    // Initialize real-time socket events
     initSocket(io);
 
-    // ✅ Attach routers with io dependency
-    app.use('/api/products', initializeProductRoutes(io)); // uses default export
-    app.use('/api/categories', categoryRouter(io)); // uses named export
+    // Attach routes
+    // Routes that need real-time (Socket.IO) get `io` passed
+    app.use('/api/products', initializeProductRoutes(io));
+    app.use('/api/categories', categoryRouter(io));
+    app.use('/api/cart', cartRouter(io));         // Real-time cart updates
+    app.use('/api/reviews', reviewRouter(io));    // Live review notifications
 
-    // ✅ Start server
+    // Routes that don't need socket
+    app.use('/api/orders', orderRouter());
+    app.use('/api/auth', authRouter());
+
+    // Start server
     server.listen(config.PORT, () => {
-      logger.info(`✅ Backend running on :${config.PORT}`);
+      logger.info(`Server running on http://localhost:${config.PORT}`);
       if (process.env.NODE_ENV !== 'production') {
-        logger.info(`📚 Swagger docs:${config.PORT}/api-docs`);
+        logger.info(`Swagger UI: http://localhost:${config.PORT}/api-docs`);
       }
     });
 
-    // ✅ Graceful shutdown signals
-    process.on('SIGINT', () => logger.warn('🛑 Received SIGINT. Shutting down...'));
-    process.on('SIGTERM', () => logger.warn('🛑 Received SIGTERM. Shutting down...'));
+    // Graceful shutdown
+    const gracefulShutdown = (signal: string) => {
+      logger.warn(`Received ${signal}. Shutting down gracefully...`);
+      server.close(() => {
+        logger.info('HTTP server closed');
+        io.close(() => {
+          logger.info('Socket.IO server closed');
+          process.exit(0);
+        });
+      });
+    };
+
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+
   } catch (error) {
-    logger.error('❌ Failed to start server:', {
+    logger.error('Failed to start server:', {
       message: (error as Error).message,
       stack: (error as Error).stack,
-      env: {
-        NODE_ENV: process.env.NODE_ENV,
-        PORT: process.env.PORT,
-        DATABASE_URL: process.env.DATABASE_URL ? '[set]' : '[not set]',
-      },
     });
     process.exit(1);
   }

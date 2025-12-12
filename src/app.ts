@@ -1,34 +1,48 @@
-import cors from 'cors';
 import express, { Application } from 'express';
+import cors from 'cors';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { errorMiddleware } from './middleware/errorMiddleware';
 import { rateLimiter } from './middleware/rateLimitMiddleware';
-import { orderRouter } from './routes/orderRoutes';
-import { authRouter } from './routes/authRoutes';
 
 const app: Application = express();
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://chipper-gray.vercel.app']
+    : ['http://localhost:3000', 'http://localhost:3001'],
+  credentials: true,
+}));
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 app.use(rateLimiter);
 
-// Routes that don’t need socket
-app.use('/api/orders', orderRouter());
-app.use('/api/auth', authRouter());
+// Static files (uploads, etc.)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
-// Swagger docs
-const swaggerDocument = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// Healthcheck
+// Health check
 app.get('/health', (_req, res) => {
-  res.status(200).json({ status: 'healthy' });
+  res.status(200).json({ 
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
 });
 
-// Error handler
+// Swagger Documentation
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    const swaggerDocument = YAML.load(path.join(__dirname, '../docs/swagger.yaml'));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  } catch (err) {
+    console.warn('Swagger docs not loaded:', err);
+  }
+}
+
+// Global error handler (must be last)
 app.use(errorMiddleware);
 
 export default app;
