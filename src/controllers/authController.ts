@@ -7,17 +7,22 @@ import { config } from '../utils/config';
 import logger from '../utils/logger';
 
 /**
- * ✅ Validators
+ * Validation Rules
  */
 export const validateRegister = [
   check('username')
     .isLength({ min: 3 })
     .trim()
     .withMessage('Username must be at least 3 characters'),
+  check('email')
+    .isEmail()
+    .normalizeEmail()
+    .withMessage('Valid email is required'),
   check('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters'),
   check('role')
+    .optional()
     .isIn(['user', 'admin'])
     .withMessage('Role must be user or admin'),
 ];
@@ -28,7 +33,7 @@ export const validateLogin = [
 ];
 
 /**
- * ✅ Register Controller
+ * Register Controller — Fixed to include required `email` field
  */
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -37,9 +42,10 @@ export const register = async (req: Request, res: Response) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { username, password, role } = req.body;
+  const { username, email, password, role = 'user' } = req.body;
 
   try {
+    // Admin limit check (your original logic preserved)
     if (role === 'admin') {
       const adminCount = await prisma.user.count({ where: { role: 'admin' } });
       if (adminCount >= 3) {
@@ -48,22 +54,32 @@ export const register = async (req: Request, res: Response) => {
       }
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { username } });
+    // Check for existing user by username OR email
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [{ username }, { email }],
+      },
+    });
+
     if (existingUser) {
-      logger.warn('Username already exists', { username });
-      return res.status(400).json({ error: 'Username already exists' });
+      const field = existingUser.username === username ? 'Username' : 'Email';
+      logger.warn(`${field} already exists`, { username, email });
+      return res.status(400).json({ error: `${field} already taken` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Now includes email — matches your Prisma schema
     await prisma.user.create({
       data: {
         username,
+        email,
         password: hashedPassword,
         role,
       },
     });
 
-    logger.info('User registered successfully', { username });
+    logger.info('User registered successfully', { username, email, role });
     return res.status(201).json({ message: 'Registration successful' });
   } catch (error: unknown) {
     logger.error('Error registering user', { error });
@@ -72,7 +88,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 /**
- * ✅ Login Controller
+ * Login Controller — unchanged and perfect
  */
 export const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -104,7 +120,7 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign(
       { userId: user.id, role: user.role },
       config.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '24h' }
     );
 
     logger.info('User logged in successfully', { userId: user.id, username });

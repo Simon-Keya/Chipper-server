@@ -30,7 +30,7 @@ const startServer = async () => {
     const io = new Server(server, {
       cors: {
         origin: process.env.NODE_ENV === 'production' 
-          ? ['https://yourdomain.com'] 
+          ? ['https://chipper-gray.vercel.app'] 
           : ['http://localhost:3000', 'http://localhost:3001'],
         methods: ['GET', 'POST'],
       },
@@ -42,13 +42,13 @@ const startServer = async () => {
     // Attach routes
     // Routes that need real-time (Socket.IO) get `io` passed
     app.use('/api/products', initializeProductRoutes(io));
-    app.use('/api/categories', categoryRouter(io));
-    app.use('/api/cart', cartRouter(io));         // Real-time cart updates
-    app.use('/api/reviews', reviewRouter(io));    // Live review notifications
+    app.use('/api/categories', categoryRoutes(io));
+    app.use('/api/cart', cartRoutes(io));         // Real-time cart updates
+    app.use('/api/reviews', reviewRoutes(io));    // Live review notifications
 
     // Routes that don't need socket
-    app.use('/api/orders', orderRouter());
-    app.use('/api/auth', authRouter());
+    app.use('/api/orders', orderRoutes());
+    app.use('/api/auth', authRoutes());
 
     // Start server
     server.listen(config.PORT, () => {

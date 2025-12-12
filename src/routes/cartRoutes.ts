@@ -1,19 +1,21 @@
+// src/routes/cartRoutes.ts
 import { Router } from 'express';
 import { authenticateToken } from '../middleware/authMiddleware';
-import { 
-  getCart, 
-  addToCart, 
-  updateCartItem, 
-  removeFromCart, 
-  clearCart 
+import {
+  getCart,
+  addToCart,
+  updateCartItem,
+  removeFromCart,
+  clearCart,
 } from '../controllers/cartController';
 
 const router = Router();
 
-router.get('/', authenticateToken, getCart);
-router.post('/', authenticateToken, addToCart);
-router.put('/:id', authenticateToken, updateCartItem);
-router.delete('/:id', authenticateToken, removeFromCart);
-router.delete('/', authenticateToken, clearCart);
+router.use(authenticateToken);
+router.get('/', getCart);
+router.post('/', addToCart);
+router.put('/:id', updateCartItem);
+router.delete('/:id', removeFromCart);
+router.delete('/', clearCart);
 
 export default router;

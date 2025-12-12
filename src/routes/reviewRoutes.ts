@@ -1,10 +1,11 @@
+// src/routes/reviewRoutes.ts
 import { Router } from 'express';
 import { authenticateToken } from '../middleware/authMiddleware';
-import { 
-  getReviews, 
-  createReview, 
-  updateReview, 
-  deleteReview 
+import {
+  getReviews,
+  createReview,
+  updateReview,
+  deleteReview,
 } from '../controllers/reviewController';
 
 const router = Router();
