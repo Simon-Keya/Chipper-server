@@ -2,12 +2,15 @@
 
 import Stripe from 'stripe';
 
+// Throw early if secret key is missing
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not set in environment variables');
 }
 
+// Use the latest supported Stripe API version as of December 2025
+// '2025-11-17.clover' is the current stable version
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2025-11-17.clover' as const,  // ← Fixed: Use valid version + 'as const' for type safety
 });
 
 export async function processPayment(
@@ -34,7 +37,7 @@ export async function processPayment(
 
     if (method === 'MPESA') {
       console.log(`M-Pesa payment initiated for order #${orderId} - KSh ${amount}`);
-      // TODO: Implement real M-Pesa STK Push
+      // TODO: Implement real M-Pesa STK Push integration
       // For now, simulate success
       return 'COMPLETED';
     }

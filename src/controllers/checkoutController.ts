@@ -25,7 +25,6 @@ export const createCheckout = async (req: Request, res: Response) => {
       0
     );
 
-    // Create order
     const order = await prisma.order.create({
       data: {
         userId,
@@ -37,7 +36,6 @@ export const createCheckout = async (req: Request, res: Response) => {
       },
     });
 
-    // Create order items
     await prisma.orderItem.createMany({
       data: cartItems.map((item) => ({
         orderId: order.id,
@@ -47,19 +45,16 @@ export const createCheckout = async (req: Request, res: Response) => {
       })),
     });
 
-    // Clear cart
     await prisma.cartItem.deleteMany({ where: { userId } });
 
-    // Process payment
     let paymentResult: 'COMPLETED' | 'PENDING' | 'FAILED' = 'PENDING';
 
     if (paymentMethod === 'CARD') {
-      paymentResult = await processPayment(total, 'card', order.id);
+      paymentResult = await processPayment(total, 'CARD', order.id);
     } else if (paymentMethod === 'MPESA') {
-      paymentResult = await processPayment(total, 'mpesa', order.id);
+      paymentResult = await processPayment(total, 'MPESA', order.id);
     }
 
-    // Update order status
     await prisma.order.update({
       where: { id: order.id },
       data: {
@@ -72,7 +67,11 @@ export const createCheckout = async (req: Request, res: Response) => {
       where: { id: order.id },
       include: {
         orderItems: {
-          include: { product: true },
+          include: {
+            product: {
+              include: { category: true },
+            },
+          },
         },
         user: {
           select: { id: true, username: true, email: true },
@@ -103,9 +102,15 @@ export const getCheckout = async (req: Request, res: Response) => {
       },
       include: {
         orderItems: {
-          include: { product: { include: { category: true } } },
+          include: {
+            product: {
+              include: { category: true },
+            },
+          },
         },
-        user: { select: { username: true, email: true } },
+        user: {
+          select: { username: true, email: true },
+        },
       },
     });
 

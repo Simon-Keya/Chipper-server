@@ -1,20 +1,28 @@
 // src/middleware/authMiddleware.ts
 
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../utils/config';
 import logger from '../utils/logger';
 
+// Global augmentation to extend Express Request
 declare global {
   namespace Express {
     interface Request {
       user?: {
-        userId: number;   // ← Must be userId, not id
+        userId: number;
         role: string;
       };
     }
   }
 }
+
+// Define the payload type locally (fixes "Cannot find name 'JwtPayload'")
+interface JwtPayload {
+  userId: number;
+  role: string;
+}
+
 /**
  * Authenticate JWT token
  */
@@ -43,7 +51,7 @@ export const authenticateToken = (
       return res.status(403).json({ error: 'Invalid or expired token' });
     }
 
-    // Now req.user is properly typed everywhere!
+    // Properly typed assignment
     req.user = decoded as JwtPayload;
     next();
   });
@@ -69,5 +77,5 @@ export const adminMiddleware = (
   next();
 };
 
-// Optional: Keep backward compatibility
+// Backward compatibility for imports that use 'authMiddleware'
 export { authenticateToken as authMiddleware };

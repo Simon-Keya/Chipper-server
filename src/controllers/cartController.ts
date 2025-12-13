@@ -63,7 +63,6 @@ export const addToCart = async (req: Request, res: Response) => {
       });
     }
 
-    // Reduce stock
     await prisma.product.update({
       where: { id: productId },
       data: { stock: product.stock - quantity },

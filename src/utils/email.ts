@@ -1,9 +1,8 @@
 // src/utils/email.ts
 
 import nodemailer from 'nodemailer';
-import { OrderItem } from '@prisma/client';
 
-// Fix: createTransport, not createTransporter
+// Fix: createTransport (not createTransporter)
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: parseInt(process.env.EMAIL_PORT || '587'),
@@ -12,23 +11,38 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  tls: { rejectUnauthorized: false },
+  tls: {
+    rejectUnauthorized: false,
+  },
 });
+
+// Define the shape of order items directly — no Prisma import needed
+interface OrderLineItem {
+  product: {
+    name: string;
+    price: number;
+  };
+  quantity: number;
+}
 
 interface OrderEmailData {
   orderId: number;
   total: number;
   createdAt: string | Date;
-  items: Array<{
-    product: { name: string; price: number };
-    quantity: number;
-  }>;
+  items: OrderLineItem[];
   customerEmail: string;
   customerName?: string;
 }
 
-const generateOrderEmail = (data: OrderEmailData) => {
-  const { orderId, total, createdAt, items, customerName = 'Valued Customer' } = data;
+const generateOrderEmail = (data: OrderEmailData): string => {
+  const {
+    orderId,
+    total,
+    createdAt,
+    items,
+    customerName = 'Valued Customer',
+  } = data;
+
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
 
   const itemRows = items
@@ -42,7 +56,7 @@ const generateOrderEmail = (data: OrderEmailData) => {
           </div>
         </td>
         <td style="padding: 12px 0; border-bottom: 1px solid #eee; text-align: right; font-weight: 600;">
-          KSh ${ (item.product.price * item.quantity).toLocaleString() }
+          KSh ${(item.product.price * item.quantity).toLocaleString()}
         </td>
       </tr>
     `
@@ -51,7 +65,7 @@ const generateOrderEmail = (data: OrderEmailData) => {
 
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
       <head>
         <meta charset="utf-8">
         <title>Order Confirmed! #${orderId}</title>
@@ -126,7 +140,7 @@ const generateOrderEmail = (data: OrderEmailData) => {
 
 export const sendOrderConfirmation = async (
   order: { id: number; total: number; createdAt: string | Date },
-  items: Array<{ product: { name: string; price: number }; quantity: number }>,
+  items: OrderLineItem[],
   userEmail: string,
   customerName?: string
 ): Promise<void> => {
@@ -147,9 +161,9 @@ export const sendOrderConfirmation = async (
       html,
     });
 
-    console.log('Order confirmation email sent:', userEmail);
+    console.log('Order confirmation email sent to:', userEmail);
   } catch (error) {
-    console.error('Failed to send confirmation email:', error);
-    // Never break checkout over email
+    console.error('Failed to send order confirmation email:', error);
+    // Do not throw — email failure should never break checkout
   }
 };
