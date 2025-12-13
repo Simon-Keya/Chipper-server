@@ -9,13 +9,13 @@ import { initSocket } from './sockets/socketHandler';
 import { config } from './utils/config';
 import logger from './utils/logger';
 
-// Route imports — exactly matching your exports
-import initializeProductRoutes from './routes/productRoutes';
-import { categoryRouter } from './routes/categoryRoutes';
-import { orderRouter } from './routes/orderRoutes';
+// Route imports
 import { authRouter } from './routes/authRoutes';
-import cartRouter from './routes/cartRoutes';           // default export
-import reviewRouter from './routes/reviewRoutes';         // default export
+import cartRouter from './routes/cartRoutes';
+import { categoryRouter } from './routes/categoryRoutes';
+import orderRouter from './routes/orderRoutes'; // ← Fixed: default import
+import initializeProductRoutes from './routes/productRoutes';
+import reviewRouter from './routes/reviewRoutes';
 
 dotenv.config();
 
@@ -39,14 +39,12 @@ const startServer = async () => {
 
     initSocket(io);
 
-    // Routes that need real-time updates → pass `io`
     app.use('/api/products', initializeProductRoutes(io));
     app.use('/api/categories', categoryRouter(io));
 
-    // Routes that do NOT need Socket.IO → no `io` passed
     app.use('/api/cart', cartRouter);
     app.use('/api/reviews', reviewRouter);
-    app.use('/api/orders', orderRouter());
+    app.use('/api/orders', orderRouter);  // ← No () needed — it's already the router
     app.use('/api/auth', authRouter());
 
     server.listen(config.PORT, () => {
@@ -56,7 +54,6 @@ const startServer = async () => {
       }
     });
 
-    // Graceful shutdown
     const shutdown = (signal: string) => {
       logger.warn(`${signal} received. Shutting down...`);
       server.close(() => {
