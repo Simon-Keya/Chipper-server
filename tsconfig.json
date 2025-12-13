@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
 
-    // Optional: Silence deprecation warning if it falsely appears
+    // Silence the false deprecation warning
     "ignoreDeprecations": "5.0"
   },
   "include": ["src/**/*"],

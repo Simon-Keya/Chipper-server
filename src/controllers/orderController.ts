@@ -1,52 +1,86 @@
-import prisma from '../utils/prisma';
-import { Request, Response } from 'express';
-import { check } from 'express-validator';
-import { validate } from '../middleware/validateMiddleware';
-import logger from '../utils/logger';
+// src/controllers/orderController.ts
 
-export const validateOrder = [
-  check('productId').isInt({ min: 1 }).withMessage('Valid productId required'),
-  check('quantity').isInt({ min: 1 }).withMessage('Quantity must be a positive integer'),
-  validate,
-];
+import { Request, Response } from 'express';
+import logger from '../utils/logger';
+import prisma from '../utils/prisma';
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
     const orders = await prisma.order.findMany({
-      include: { product: { include: { category: true } } },
+      include: {
+        orderItems: {
+          include: {
+            product: {
+              include: { category: true },
+            },
+          },
+        },
+        user: {
+          select: { id: true, username: true, email: true },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
+
     logger.info('Fetched orders', { count: orders.length });
     res.json(orders);
-  } catch (error: unknown) {
+  } catch (error) {
     logger.error('Error fetching orders', { error });
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 };
 
+// Note: Direct order creation with productId is not supported in your schema
+// Orders are created through checkout with cart items → orderItems
+// If you need a simple order endpoint, use orderItems instead
+// Or remove this function if checkout handles all orders
+
+// Example (optional — if you really need direct order creation):
+/*
 export const createOrder = async (req: Request, res: Response) => {
   try {
     const { productId, quantity } = req.body;
+    const userId = req.user?.userId;
+    if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-    const product = await prisma.product.findUnique({ where: { id: Number(productId) } });
-    if (!product) {
-      logger.warn('Invalid productId for order', { productId });
-      return res.status(400).json({ error: 'Invalid productId' });
-    }
+    const product = await prisma.product.findUnique({
+      where: { id: Number(productId) },
+    });
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    const total = product.price * quantity;
 
     const order = await prisma.order.create({
       data: {
-        productId: Number(productId),
-        quantity: Number(quantity),
-        total: product.price * Number(quantity),
+        userId,
+        total,
+        status: 'PENDING',
+        paymentMethod: 'CARD',
+        paymentStatus: 'PENDING',
       },
-      include: { product: { include: { category: true } } },
     });
 
-    logger.info('Order created', { orderId: order.id, productId });
-    res.status(201).json(order);
-  } catch (error: unknown) {
+    await prisma.orderItem.create({
+      data: {
+        orderId: order.id,
+        productId: Number(productId),
+        quantity,
+        priceAtPurchase: product.price,
+      },
+    });
+
+    const fullOrder = await prisma.order.findUnique({
+      where: { id: order.id },
+      include: {
+        orderItems: { include: { product: { include: { category: true } } } },
+        user: { select: { username: true } },
+      },
+    });
+
+    res.status(201).json(fullOrder);
+  } catch (error) {
     logger.error('Error creating order', { error });
-    res.status(400).json({ error: 'Failed to create order' });
+    res.status(500).json({ error: 'Failed to create order' });
   }
 };
+*/

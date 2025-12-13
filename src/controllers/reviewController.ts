@@ -1,11 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import { Review, ReviewPayload } from '../models/review';
-import { PrismaClient } from '@prisma/client';
-import { authenticateToken } from '../middleware/authMiddleware';
+// src/controllers/reviewController.ts
 
-const prisma = new PrismaClient();
+import { Request, Response } from 'express';
+import prisma from '../utils/prisma';
 
-export const getReviews = async (req: Request, res: Response): Promise<void> => {
+export const getReviews = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const { page = 1, limit = 10 } = req.query;
@@ -21,8 +19,8 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
         },
       },
       orderBy: { createdAt: 'desc' },
-      skip: (parseInt(page as string) - 1) * parseInt(limit as string),
-      take: parseInt(limit as string),
+      skip: (Number(page) - 1) * Number(limit),
+      take: Number(limit),
     });
 
     const total = await prisma.review.count({
@@ -32,8 +30,8 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
     res.json({
       reviews,
       total,
-      page: parseInt(page as string),
-      limit: parseInt(limit as string),
+      page: Number(page),
+      limit: Number(limit),
     });
   } catch (error) {
     console.error('Get reviews error:', error);
@@ -41,18 +39,16 @@ export const getReviews = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const createReview = async (req: Request, res: Response): Promise<void> => {
+export const createReview = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
-    const { rating, comment } = req.body as ReviewPayload;
-    const userId = req.user?.id;
+    const { rating, comment } = req.body;
+    const userId = req.user?.userId;  // ← Fixed: userId, not id
 
     if (!userId) {
-      res.status(401).json({ error: 'Unauthorized' });
-      return;
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Check if user has purchased the product
     const orderItem = await prisma.orderItem.findFirst({
       where: {
         productId: parseInt(productId),
@@ -64,11 +60,9 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
     });
 
     if (!orderItem) {
-      res.status(403).json({ error: 'You can only review products you have purchased' });
-      return;
+      return res.status(403).json({ error: 'You can only review products you have purchased' });
     }
 
-    // Check if user already reviewed this product
     const existingReview = await prisma.review.findFirst({
       where: { productId: parseInt(productId), userId },
     });
@@ -78,13 +72,10 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
         where: { id: existingReview.id },
         data: { rating, comment },
         include: {
-          user: {
-            select: { id: true, name: true },
-          },
+          user: { select: { id: true, name: true } },
         },
       });
-      res.json(updatedReview);
-      return;
+      return res.json(updatedReview);
     }
 
     const review = await prisma.review.create({
@@ -95,9 +86,7 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
         comment,
       },
       include: {
-        user: {
-          select: { id: true, name: true },
-        },
+        user: { select: { id: true, name: true } },
       },
     });
 
@@ -108,33 +97,29 @@ export const createReview = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const updateReview = async (req: Request, res: Response): Promise<void> => {
+export const updateReview = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { rating, comment } = req.body as ReviewPayload;
-    const userId = req.user?.id;
+    const { rating, comment } = req.body;
+    const userId = req.user?.userId;  // ← Fixed
 
     if (!userId) {
-      res.status(401).json({ error: 'Unauthorized' });
-      return;
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const review = await prisma.review.findFirst({
-      where: { id: parseInt(id), userId },
+      where: { id: Number(id), userId },
     });
 
     if (!review) {
-      res.status(404).json({ error: 'Review not found' });
-      return;
+      return res.status(404).json({ error: 'Review not found' });
     }
 
     const updatedReview = await prisma.review.update({
-      where: { id: parseInt(id) },
+      where: { id: Number(id) },
       data: { rating, comment },
       include: {
-        user: {
-          select: { id: true, name: true },
-        },
+        user: { select: { id: true, name: true } },
       },
     });
 
@@ -145,27 +130,24 @@ export const updateReview = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export const deleteReview = async (req: Request, res: Response): Promise<void> => {
+export const deleteReview = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const userId = req.user?.id;
+    const userId = req.user?.userId;  // ← Fixed
 
     if (!userId) {
-      res.status(401).json({ error: 'Unauthorized' });
-      return;
+      return res.status(401).json({ error: 'Unauthorized' });
     }
 
     const review = await prisma.review.findFirst({
-      where: { id: parseInt(id), userId },
+      where: { id: Number(id), userId },
     });
 
     if (!review) {
-      res.status(404).json({ error: 'Review not found' });
-      return;
+      return res.status(404).json({ error: 'Review not found' });
     }
 
-    await prisma.review.delete({ where: { id: parseInt(id) } });
-
+    await prisma.review.delete({ where: { id: Number(id) } });
     res.json({ message: 'Review deleted' });
   } catch (error) {
     console.error('Delete review error:', error);
