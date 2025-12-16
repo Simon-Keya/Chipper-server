@@ -1,10 +1,10 @@
-import prisma from '../utils/prisma';
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { config } from '../utils/config';
 import logger from '../utils/logger';
+import prisma from '../utils/prisma';
 
 /**
  * Validation Rules
@@ -33,7 +33,7 @@ export const validateLogin = [
 ];
 
 /**
- * Register Controller — Fixed to include required `email` field
+ * Register Controller
  */
 export const register = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
   const { username, email, password, role = 'user' } = req.body;
 
   try {
-    // Admin limit check (your original logic preserved)
+    // Admin limit check
     if (role === 'admin') {
       const adminCount = await prisma.user.count({ where: { role: 'admin' } });
       if (adminCount >= 3) {
@@ -54,7 +54,7 @@ export const register = async (req: Request, res: Response) => {
       }
     }
 
-    // Check for existing user by username OR email
+    // Check for existing user
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ username }, { email }],
@@ -69,7 +69,6 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Now includes email — matches your Prisma schema
     await prisma.user.create({
       data: {
         username,
@@ -88,7 +87,7 @@ export const register = async (req: Request, res: Response) => {
 };
 
 /**
- * Login Controller — unchanged and perfect
+ * Login Controller — Fixed to always return JSON
  */
 export const login = async (req: Request, res: Response) => {
   const errors = validationResult(req);
@@ -101,12 +100,14 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const user = await prisma.user.findUnique({ where: { username } });
+    
     if (!user) {
-      logger.warn('Invalid login attempt - no user', { username });
+      logger.warn('Invalid login attempt - user not found', { username });
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const isValid = await bcrypt.compare(password, user.password);
+    
     if (!isValid) {
       logger.warn('Invalid login attempt - wrong password', { username });
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -124,9 +125,11 @@ export const login = async (req: Request, res: Response) => {
     );
 
     logger.info('User logged in successfully', { userId: user.id, username });
-    return res.json({ token });
+    
+    // Always return JSON with token
+    return res.status(200).json({ token });
   } catch (error: unknown) {
-    logger.error('Error logging in', { error });
-    return res.status(500).json({ error: 'Failed to log in' });
+    logger.error('Error during login', { error });
+    return res.status(500).json({ error: 'Login failed' });
   }
 };
